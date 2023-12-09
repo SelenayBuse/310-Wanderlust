@@ -15,8 +15,14 @@ public class HotelService {
         return hotelRepository.findAll();
     }
 
-    public Optional<Hotels> singleHotel(ObjectId id){
+    public Optional<Hotels> getHotelById(ObjectId id){
         return hotelRepository.findById(id);
+    }
+
+    public int getLikesCount(ObjectId hotelId) {
+        return getHotelById(hotelId)
+                .map(Hotels::getLikes)  // Map to the number of likes if the hotel is present
+                .orElse(0);             // If the hotel is not present, return 0
     }
 
     public boolean likeHotel(ObjectId hotelId) {

@@ -18,4 +18,28 @@ public class RestaurantService {
     public Optional<Restaurants> singleRestaurant(ObjectId id){
         return restaurantRepository.findById(id);
     }
+
+    public Optional<Restaurants> getRestaurantById(ObjectId id){
+        return restaurantRepository.findById(id);
+    }
+
+    public int getLikesCount(ObjectId restId) {
+
+        return getRestaurantById(restId)
+                .map(Restaurants::getLikes)  // Map to the number of likes if the hotel is present
+                .orElse(0);             // If the hotel is not present, return 0
+    }
+
+    public boolean likeRestaurant(ObjectId restId) {
+        Optional<Restaurants> optionalRestaurant = restaurantRepository.findById(restId);
+
+        if (optionalRestaurant.isPresent()) {
+            Restaurants restaurant = optionalRestaurant.get();
+            restaurant.incrementLikes();
+            restaurantRepository.save(restaurant);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

@@ -33,6 +33,11 @@ public class Museums {
         this.comments = new Vector<>();
     }
 
-
+    public void incrementLikes(){
+        this.likes++;
+    }
+    public int getLikes(){
+        return likes;
+    }
 
 }

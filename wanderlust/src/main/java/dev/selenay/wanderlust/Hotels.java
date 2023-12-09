@@ -38,6 +38,9 @@ public class Hotels {
     public void incrementLikes(){
         this.likes++;
     }
+    public int getLikes(){
+        return likes;
+    }
 
 
 

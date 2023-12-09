@@ -3,10 +3,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +28,25 @@ public class MuseumController {
     @GetMapping("/{id}") // GET SINGLE MUSEUM BY ID
     public ResponseEntity<Optional<Museums>> getSingleMuseum(@PathVariable ObjectId id){
         return new ResponseEntity<Optional<Museums>>(museumService.singleMuseum(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/{musId}/likes-count")
+    public ResponseEntity<Integer> getMuseumLikes(@PathVariable ObjectId musId) {
+        int likesCount = museumService.getLikesCount(musId);
+        return new ResponseEntity<>(likesCount, HttpStatus.OK);
+    }
+
+    @PostMapping("/{musId}/like")
+    public ResponseEntity<String> likeMuseum(@PathVariable ObjectId musId){
+        boolean liked = museumService.likeMuseum(musId);
+
+        if(liked){
+            return new ResponseEntity<>("Museum liked successfully", HttpStatus.OK);
+        }
+
+        else{
+            return new ResponseEntity<>("Museum not found", HttpStatus.NOT_FOUND);
+        }
     }
 
 
