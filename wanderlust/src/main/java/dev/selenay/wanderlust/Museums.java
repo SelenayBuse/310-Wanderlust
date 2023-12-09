@@ -14,7 +14,7 @@ import java.util.Vector;
 @Document(collection="museums")
 public class Museums {
     @Id
-    private ObjectId mus_Id;
+    private ObjectId musId;
     private String mus_name;
     private String exhibition;
     private String district;
@@ -23,8 +23,8 @@ public class Museums {
     private Vector<Comments> comments;
 
 
-    public Museums(ObjectId mus_Id, String mus_name, String exhibition, String district, String city) {
-        this.mus_Id = mus_Id;
+    public Museums(ObjectId musId, String mus_name, String exhibition, String district, String city) {
+        this.musId = musId;
         this.mus_name = mus_name;
         this.exhibition = exhibition;
         this.district = district;

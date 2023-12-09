@@ -32,6 +32,13 @@ public class Hotels {
         this.comments = new Vector<>();
     }
 
+    public ObjectId getObjectId() {
+        return new ObjectId(String.valueOf(hotelId));
+    }
+    public void incrementLikes(){
+        this.likes++;
+    }
+
 
 
 }
