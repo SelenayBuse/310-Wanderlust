@@ -1,4 +1,5 @@
 package dev.selenay.wanderlust;
+import java.util.Calendar;
 import java.util.Vector;
 
 import lombok.*;
@@ -42,6 +43,7 @@ public class Hotels {
         return likes;
     }
 
-
-
+    public Vector<Comments> getComments() {
+        return comments;
+    }
 }

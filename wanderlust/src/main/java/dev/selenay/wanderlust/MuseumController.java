@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 // MUSEUM CONTROLLER WILL HAVE ENDPOINTS FOR
 // SHOW ALL MUSEUMS
@@ -46,6 +47,31 @@ public class MuseumController {
 
         else{
             return new ResponseEntity<>("Museum not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{musId}/get-comments")
+    public ResponseEntity<Vector<Comments>> getCommentsForMuseum(@PathVariable ObjectId musId) {
+        try {
+            Vector<Comments> comments = museumService.getCommentsForMuseum(musId);
+            return new ResponseEntity<>(comments, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{musId}/post-comments")
+    public ResponseEntity<String> addCommentToMuseum(@PathVariable("musId") ObjectId musId, @RequestBody Comments comment) {
+        if (comment == null || comment.getCommentText().isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comment text cannot be null or empty.");
+        }
+        try {
+            museumService.addCommentToMuseum(musId, comment);
+            return ResponseEntity.ok().body("Comment added successfully");
+
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add comment: " + e.getMessage());
         }
     }
 

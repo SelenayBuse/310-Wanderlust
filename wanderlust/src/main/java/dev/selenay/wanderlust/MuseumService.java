@@ -4,8 +4,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 @Service
 public class MuseumService {
@@ -39,6 +41,35 @@ public class MuseumService {
             return true;
         } else {
             return false;
+        }
+    }
+
+    public Vector<Comments> getCommentsForMuseum(ObjectId musId) {
+
+        Optional<Museums> optionalMuseum = museumRepository.findById(musId);
+
+        if (optionalMuseum.isPresent()) {
+            Museums museum = optionalMuseum.get();
+            return new Vector<>(museum.getComments());
+        } else {
+            return new Vector<>();
+        }
+    }
+
+    public void addCommentToMuseum(ObjectId musId, Comments comment) throws Exception {
+        if (comment == null || comment.getCommentText().isBlank()) {
+            throw new IllegalArgumentException("Comment cannot be null or empty.");
+        }
+        Optional<Museums> optionalMuseum = museumRepository.findById(musId);
+
+        if (optionalMuseum.isPresent()) {
+            Museums museum = optionalMuseum.get();
+            comment.setCommentId(new ObjectId());
+            comment.setTimestamp(LocalDateTime.now());
+            museum.getComments().add(comment);
+            museumRepository.save(museum);
+        } else {
+            throw new Exception("The museum you have been commenting on could not be found.");
         }
     }
 

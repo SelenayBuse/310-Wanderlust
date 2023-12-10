@@ -41,4 +41,7 @@ public class Restaurants {
     public int getLikes(){
         return likes;
     }
+    public Vector<Comments> getComments() {
+        return comments;
+    }
 }

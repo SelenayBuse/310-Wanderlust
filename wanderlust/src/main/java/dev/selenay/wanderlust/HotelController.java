@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 // HOTEL CONTROLLER WILL HAVE ENDPOINTS FOR
     // SHOW ALL HOTELS (DONE)
@@ -49,6 +50,33 @@ public class HotelController {
             return new ResponseEntity<>("Hotel not found", HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/{hotelId}/get-comments")
+    public ResponseEntity<Vector<Comments>> getCommentsForHotel(@PathVariable ObjectId hotelId) {
+        try {
+            Vector<Comments> comments = hotelService.getCommentsForHotel(hotelId);
+            return new ResponseEntity<>(comments, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{hotelId}/post-comments")
+    public ResponseEntity<String> addCommentToHotel(@PathVariable("hotelId") ObjectId hotelId, @RequestBody Comments comment) {
+        if (comment == null || comment.getCommentText().isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comment text cannot be null or empty.");
+        }
+        try {
+            hotelService.addCommentToHotel(hotelId, comment);
+            return ResponseEntity.ok().body("Comment added successfully");
+
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add comment: " + e.getMessage());
+        }
+    }
+
+
 
 
 

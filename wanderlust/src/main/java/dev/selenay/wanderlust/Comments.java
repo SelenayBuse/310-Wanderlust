@@ -2,10 +2,11 @@ package dev.selenay.wanderlust;
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-
+@Document(collection = "comments")
 @Data
 public class Comments {
     @Id
@@ -21,4 +22,23 @@ public class Comments {
         this.timestamp = timestamp;
     }
 
+    public void setCommentId(ObjectId commentId) {
+        this.commentId = commentId;
+    }
+
+    public void setTimestamp(LocalDateTime timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setText(String text){
+        this.text = text;
+    }
+
+    public String getCommentText(){
+        return this.text;
+    }
 }

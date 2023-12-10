@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Vector;
 
 // RESTAURANT CONTROLLER WILL HAVE ENDPOINTS FOR
 // SHOW ALL RESTAURANTS
@@ -46,6 +47,31 @@ public class RestaurantController {
 
         else{
             return new ResponseEntity<>("Restaurant not found", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/{restId}/get-comments")
+    public ResponseEntity<Vector<Comments>> getCommentsForRestaurant(@PathVariable ObjectId restId) {
+        try {
+            Vector<Comments> comments = restaurantService.getCommentsForRestaurant(restId);
+            return new ResponseEntity<>(comments, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping("/{restId}/post-comments")
+    public ResponseEntity<String> addCommentToRestaurant(@PathVariable("restId") ObjectId restId, @RequestBody Comments comment) {
+        if (comment == null || comment.getCommentText().isBlank()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Comment text cannot be null or empty.");
+        }
+        try {
+            restaurantService.addCommentToRestaurant(restId, comment);
+            return ResponseEntity.ok().body("Comment added successfully");
+
+        } catch (Exception e) {
+            System.out.println("Exception occurred: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Failed to add comment: " + e.getMessage());
         }
     }
 

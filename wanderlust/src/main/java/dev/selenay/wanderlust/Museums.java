@@ -39,5 +39,7 @@ public class Museums {
     public int getLikes(){
         return likes;
     }
-
+    public Vector<Comments> getComments() {
+        return comments;
+    }
 }
